@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Love Language List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            font-size: 18px;
+            padding: 10px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        a {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Love Language List</h1>
+
+    <form method="POST">
+        {% if edit_user %}
+            <input type="hidden" name="id" value="{{ edit_user.id }}">
+        {% endif %}
+
+        <input type="text" name="name" placeholder="Nama" required
+               value="{{ edit_user.name if edit_user else '' }}">
+        <input type="text" name="language" placeholder="Love Language" required
+               value="{{ edit_user.language if edit_user else '' }}">
+        <button type="submit">
+            {% if edit_user %} Perbarui {% else %} Tambah {% endif %}
+        </button>
+    </form>
+
+    <h2>Data:</h2>
+    <table>
+        <tr>
+            <th>Nama</th>
+            <th>Love Language</th>
+            <th>Aksi</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.language }}</td>
+            <td>
+                <a href="/?edit={{ user.id }}">Edit</a>
+                <form method="POST" action="/delete/{{ user.id }}" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Yakin hapus?')">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
